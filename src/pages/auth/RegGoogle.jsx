@@ -65,6 +65,7 @@ const RegDate = ({ formData, ActionFn }) => {
 
     // Проверка возраста и наличия фото
     if (regValues.age < 18 || imgsAccountSize < 1) {
+      setShowBtn(false)
       if (regValues.age < 18) {
         setShowArrAge(true);
       } else {
@@ -77,6 +78,7 @@ const RegDate = ({ formData, ActionFn }) => {
       }
     } else {
       // Если возраст больше или равен 18 и есть фото, выполняем submit
+      setShowBtn(true)
       setShowArrAge(false);
       setShowArrPhoto(false);
 
@@ -96,7 +98,7 @@ const RegDate = ({ formData, ActionFn }) => {
           (
             <>
               <h3>Введите дату</h3>
-              {showErrAge && <div className="err-hint">Вам нет 18 лет, регистрация невозможна!</div>}
+              {/* {showErrAge && <div className="err-hint">Вам нет 18 лет, регистрация невозможна!</div>} */}
 
               <RenderForm
                 fields={regFieldsGoogle}
@@ -106,6 +108,7 @@ const RegDate = ({ formData, ActionFn }) => {
                 setShowBtn={setShowBtn}
                 submitSuccess={submitSuccess}
                 showErrPhoto={showErrPhoto}
+                showErrAge={showErrAge}
               />
             </>) : renderBtn()}
 
