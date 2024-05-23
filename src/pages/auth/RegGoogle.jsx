@@ -46,47 +46,44 @@ const RegDate = ({ formData, ActionFn }) => {
   let imgsAccountSize;
   let regValues;
   const submitSuccess = () => {
-
     const { gender, dateBerth, imgsAccount } = formData.values;
 
-    let imgsAccountCheck = imgsAccount ? imgsAccount : [];
-    imgsAccountSize = imgsAccountCheck.length;
-    imgsAccountCheck = JSON.stringify(imgsAccountCheck);
+    // Проверка на наличие фото
+    const imgsAccountSize = imgsAccount ? imgsAccount.length : 0;
+    const imgsAccountCheck = JSON.stringify(imgsAccount || []);
 
-
-    regValues = {
+    const regValues = {
       dateBerth: dateBerth,
       age: calculateAge(dateBerth),
       imgsAccount: imgsAccountCheck,
       gender: gender,
       entranceDate: timestampCustomDayTime(),
       registerationDate: timestampCustomDayTime(),
+    };
 
-    }
+    console.log('formData.age', regValues);
 
-    console.log('formData.age', regValues)
-
-    if (regValues.age < 18) {
-      setShowArrAge(true);
-
+    // Проверка возраста и наличия фото
+    if (regValues.age < 18 || imgsAccountSize < 1) {
+      if (regValues.age < 18) {
+        setShowArrAge(true);
+      } else {
+        setShowArrAge(false);
+      }
+      if (imgsAccountSize < 1) {
+        setShowArrPhoto(true);
+      } else {
+        setShowArrPhoto(false);
+      }
     } else {
+      // Если возраст больше или равен 18 и есть фото, выполняем submit
       setShowArrAge(false);
-    }
-    if (imgsAccountSize < 1) {
-      setShowArrPhoto(true);
-
-    } else {
       setShowArrPhoto(false);
+
+      setGoogleValue(regValues);
+      ActionFn('SET_INFO_ACCOUNT', regValues);
     }
-
-    // console.log('imgsAccountSize', imgsAccountSize)
-
-
-    setGoogleValue(regValues);
-
-    ActionFn('SET_INFO_ACCOUNT', regValues);
-
-  }
+  };
 
 
   return (
